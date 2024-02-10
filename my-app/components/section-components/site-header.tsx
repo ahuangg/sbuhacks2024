@@ -1,8 +1,5 @@
-import Link from "next/link"
-
 import { siteConfig } from "@/config/site"
-import { Button } from "@/components/ui/button"
-import { MainNav } from "@/components/main-nav"
+import { MainNav } from "@/components/section-components/main-nav"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 export function SiteHeader() {
@@ -12,9 +9,7 @@ export function SiteHeader() {
         <MainNav items={siteConfig.mainNav} />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-1">
-            <Button variant="ghost">Log In</Button>
-            <Button>Sign Up</Button>
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
           </nav>
         </div>
       </div>

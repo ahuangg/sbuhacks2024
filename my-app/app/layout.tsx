@@ -8,6 +8,7 @@ import Sidebar from "@/components/section-components/sidebar"
 import { SiteHeader } from "@/components/section-components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
+import { SearchBar }  from "@/components/searchbar"
 
 export const metadata: Metadata = {
   title: {
@@ -42,12 +43,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div className="flex flex-row w-full">
-              <Sidebar />
-              <div className="relative flex min-h-screen w-full flex-col">
-                <SiteHeader />
-                <div className="flex-1">{children}</div>
-              </div>
+            <div className="relative flex min-h-screen flex-col">
+              <SiteHeader />
+              <SearchBar />
+              <div className="flex-1">{children}</div>
             </div>
             <TailwindIndicator />
           </ThemeProvider>

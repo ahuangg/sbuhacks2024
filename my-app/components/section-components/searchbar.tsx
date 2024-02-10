@@ -1,6 +1,13 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import {
+  chatLogAtom,
+  logIndexAtom,
+  pageStateAtom,
+  searchTextAtom,
+} from "@/atoms/globalAtoms"
+import { useAtom } from "jotai"
 import { BsArrowUpCircle } from "react-icons/bs"
 
 import { cn } from "@/lib/utils"
@@ -8,13 +15,11 @@ import { Input } from "@/components/ui/input"
 
 const SearchBar = () => {
   const [placeholder, setPlaceHolder] = useState<string>("")
-  const placeholders: string[] = [
-    "I need ideas for my high school reunion",
-    "I want a nice suit for my prom",
-    "Daughters piano recital",
-    "Black t-shirt",
-    "Need suggestions for meeting my girlfriend's parents",
-  ]
+  const placeholders: string[] = ["Enter a prompt here"]
+  const [currPageState, setCurrPageState] = useAtom(pageStateAtom)
+  const [currSearchText, setSearchText] = useAtom(searchTextAtom)
+  const [chatLog, setChatLog] = useAtom(chatLogAtom)
+  const [logIndex, setLogIndex] = useAtom(logIndexAtom)
 
   useEffect(() => {
     let currentPlaceholder: string = ""
@@ -34,13 +39,40 @@ const SearchBar = () => {
     return () => clearInterval(typingEffect)
   }, [])
 
+  const handleSearch = () => {
+    //api call
+
+    setChatLog([
+      ...chatLog,
+      {
+        chatId: chatLog.length,
+        userText: currSearchText,
+        gptText: "recommendations",
+        recommendations: [],
+      },
+    ])
+
+    setLogIndex(() => chatLog.length)
+
+    setSearchText("")
+    setCurrPageState("chat")
+  }
+
   return (
     <div className="flex items-center gap-3 w-full">
-      <Input type="text" placeholder={placeholder}></Input>
+      <Input
+        type="text"
+        placeholder={placeholder}
+        value={currSearchText}
+        onChange={(e) => setSearchText(e.target.value)}
+      ></Input>
       <BsArrowUpCircle
         className={cn(
           "cursor-pointer rounded-full border bg-background text-3xl text-foreground"
         )}
+        onClick={() => {
+          handleSearch()
+        }}
       />
     </div>
   )

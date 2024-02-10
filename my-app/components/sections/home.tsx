@@ -1,5 +1,5 @@
 import React from "react"
-import { BsStars } from "react-icons/bs"
+import { BsSearch } from "react-icons/bs"
 
 import {
   Card,
@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
+import SearchBar from "../section-components/searchbar"
 
 const Home = () => {
   let recommendations = [
@@ -44,34 +46,39 @@ const Home = () => {
   ]
 
   return (
-    <div className="h-[90%]">
-      <h1 className="text-5xl font-medium bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 inline-block text-transparent bg-clip-text">
-        Hello, Alan.
-      </h1>
-      <h1 className="text-5xl font-medium text-slate-600">
-        What occasion are you attending today?
-      </h1>
+    <React.Fragment>
+      <div className="h-[90%]">
+        <h1 className="text-5xl font-medium bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+          Hello, Alan.
+        </h1>
+        <h1 className="text-5xl font-medium text-slate-600">
+          What occasion are you attending today?
+        </h1>
 
-      <div className="h-full flex justify-center items-center">
-        <div className="grid grid-cols-3 gap-4">
-          {recommendations.map((recc) => {
-            return (
-              <Card>
-                <CardHeader>
-                  <CardTitle>{recc.occasion}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-600">{recc.description}</p>
-                </CardContent>
-                <CardFooter className="flex justify-end">
-                  <BsStars />
-                </CardFooter>
-              </Card>
-            )
-          })}
+        <div className="h-full flex justify-center items-center">
+          <div className="grid grid-cols-3 gap-4">
+            {recommendations.map((recc) => {
+              return (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>{recc.occasion}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-600">{recc.description}</p>
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <BsSearch />
+                  </CardFooter>
+                </Card>
+              )
+            })}
+          </div>
         </div>
       </div>
-    </div>
+      <div className="flex justify-bottom">
+        <SearchBar />
+      </div>
+    </React.Fragment>
   )
 }
 

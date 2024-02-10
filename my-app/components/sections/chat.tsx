@@ -29,7 +29,7 @@ const Chat = () => {
         </Avatar>
         <div className="ml-3">{chatLog[logIndex].gptText}</div>
       </div>
-	    </div>
+    </div>
   )
 }
 

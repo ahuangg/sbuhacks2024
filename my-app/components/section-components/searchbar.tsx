@@ -7,6 +7,7 @@ import {
   pageStateAtom,
   searchTextAtom,
 } from "@/atoms/globalAtoms"
+import axios from "axios"
 import { useAtom } from "jotai"
 import { BsArrowUpCircle } from "react-icons/bs"
 
@@ -37,33 +38,23 @@ const SearchBar = () => {
     }, 75)
 
     return () => clearInterval(typingEffect)
-  }, [])
+  })
 
-  const handleSearch = () => {
-    //api call
-    try {
-      fetch('http://localhost:8080/response', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: currSearchText }),
-      }).then(res => res.json)
-      .then(
-        data => {
-          console.log("shouldve returned something")
-          console.log(data)
-        }
-      );
-    } catch (error) {
-      console.error('Error sending data to Flask:', error);
-    }
+  const handleSearch = async () => {
+    let gptText = await axios.post("http://localhost:8080/response", {
+      data: { text: currSearchText },
+    })
+
+    console.log(gptText)
+
     setChatLog([
       ...chatLog,
       {
         chatId: chatLog.length,
         userText: currSearchText,
-        gptText: "recommendations",
+        gptText: "Here is your response for " + currSearchText,
+        maleRes: gptText.data.male,
+        femaleRes: gptText.data.female,
         recommendations: [],
       },
     ])

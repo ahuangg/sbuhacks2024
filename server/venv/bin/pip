@@ -1,4 +1,4 @@
-#!/Users/khajredinaj/Desktop/sbuhacks2024/server/venv/bin/python3
+#!/Users/ahuangg/workplace/self-projects/sbuhacks2024/server/venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -1,7 +1,9 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import { BsArrowUpCircle } from "react-icons/bs"
 
+import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 
 const SearchBar = () => {
@@ -32,7 +34,16 @@ const SearchBar = () => {
     return () => clearInterval(typingEffect)
   }, [])
 
-  return <Input type="text" placeholder={placeholder} />
+  return (
+    <div className="flex items-center gap-3 w-full">
+      <Input type="text" placeholder={placeholder}></Input>
+      <BsArrowUpCircle
+        className={cn(
+          "cursor-pointer rounded-full border bg-background text-3xl text-foreground"
+        )}
+      />
+    </div>
+  )
 }
 
 export default SearchBar

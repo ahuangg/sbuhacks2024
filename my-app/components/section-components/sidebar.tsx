@@ -1,10 +1,11 @@
 "use client"
 
 import React from "react"
-import { BsArrowLeftShort } from "react-icons/bs"
+import { BsArrowLeftShort, BsPlusCircle } from "react-icons/bs"
 
 import { cn } from "@/lib/utils"
 import { useSidebar } from "@/hooks/useSidebar"
+import { Label } from "@/components/ui/label"
 
 const Sidebar = () => {
   const { isOpen, toggle } = useSidebar()
@@ -21,7 +22,7 @@ const Sidebar = () => {
       className={cn(
         `relative hidden h-screen border-r pt-20 md:block`,
         status && "duration-500",
-        !isOpen ? "w-72" : "w-[78px]"
+        !isOpen ? "w-64" : "w-[78px]"
       )}
     >
       <BsArrowLeftShort
@@ -33,7 +34,18 @@ const Sidebar = () => {
       />
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
-          <div className="mt-3 space-y-1"></div>
+          <div className="flex mt-6 space-y-1 justify-center gap-2 ">
+            <Label className="flex">
+              <BsPlusCircle
+                className={cn(
+                  "cursor-pointer rounded-full border bg-background text-3xl text-foreground"
+                )}
+              />
+              <div className={cn("flex items-center", !isOpen && "ml-3")}>
+                {!isOpen ? "New Chat" : ""}
+              </div>
+            </Label>
+          </div>
         </div>
       </div>
     </nav>

@@ -31,8 +31,9 @@ CORS(app)
 
 @app.route("/response", methods=['GET','POST'])
 def response():
-    # data = request.get_json()
-    # received_variable = data.get('variable')
+    data = request.get_json()
+    received_variable = data.get('text')
+    print(received_variable)
     client = OpenAI()
 
     response = client.chat.completions.create(

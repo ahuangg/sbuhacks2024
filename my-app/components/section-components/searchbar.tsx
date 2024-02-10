@@ -41,7 +41,23 @@ const SearchBar = () => {
 
   const handleSearch = () => {
     //api call
-
+    try {
+      fetch('http://localhost:8080/response', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: currSearchText }),
+      }).then(res => res.json)
+      .then(
+        data => {
+          console.log("shouldve returned something")
+          console.log(data)
+        }
+      );
+    } catch (error) {
+      console.error('Error sending data to Flask:', error);
+    }
     setChatLog([
       ...chatLog,
       {

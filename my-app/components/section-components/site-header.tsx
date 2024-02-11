@@ -30,92 +30,92 @@ export function SiteHeader() {
   const [currPageState, setPageState] = useAtom(pageStateAtom)
   const [error, setError] = React.useState("")
 
-  const handleClose = async() => {
+  const handleClose = async () => {
     setName("")
     setEmail("")
     setPassword("")
     setError("")
-  };
+  }
 
   const handleLogin = async () => {
     setError("")
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailPattern.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
+      setError("Please enter a valid email address.")
+      return
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
-      return;
+      setError("Password must be at least 8 characters long.")
+      return
     }
 
-    let res = null; 
+    let res = null
     try {
       res = await axios.post("http://localhost:8080/login", {
         email,
         password,
-      });
+      })
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
-          setError("Invalid password.");
-          return
-        } 
-        if (error.response?.status === 402) {
-          setError("No account attached to given email."); 
+          setError("Invalid password.")
           return
         }
-        else {
+        if (error.response?.status === 402) {
+          setError("No account attached to given email.")
+          return
+        } else {
           setError("An error occured during login.")
         }
-        return; 
+        return
       }
     }
-    if (res) { 
-      setUserName(res.data.name);
-      setPageState("home");
+    if (res) {
+      setUserName(res.data.name)
+      setPageState("home")
     }
-  };
+  }
 
   const handleRegister = async () => {
     setError("")
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailPattern.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
+      setError("Please enter a valid email address.")
+      return
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
-      return;
+      setError("Password must be at least 8 characters long.")
+      return
     }
 
     if (name.length < 5) {
-      setError("Username must be at least 5 characters long.");
-      return;
+      setError("Username must be at least 5 characters long.")
+      return
     }
     try {
       await axios.post("http://localhost:8080/register", {
         name,
         email,
         password,
-      });
-    }
-    catch (error) {
+      })
+    } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 409) {
-          setError("The username or email supplied is already registered to an account.");
+          setError(
+            "The username or email supplied is already registered to an account."
+          )
         } else {
-          setError("An error occurred during registration.");
+          setError("An error occurred during registration.")
         }
       }
       return
     }
     setUserName(name)
     setPageState("home")
-  };
+  }
 
   return (
     <header className="bg-background sticky top-0 z-40 w-full border-b">
@@ -131,7 +131,7 @@ export function SiteHeader() {
                     <Button variant="ghost">Login</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader >
+                    <DialogHeader>
                       <DialogTitle>Login</DialogTitle>
                       <DialogDescription>
                         Enter email and password to login your account.
@@ -247,6 +247,7 @@ export function SiteHeader() {
               </>
             ) : (
               <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>AH</AvatarFallback>
               </Avatar>
             )}

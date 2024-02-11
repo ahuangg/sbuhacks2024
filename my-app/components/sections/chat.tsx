@@ -20,6 +20,7 @@ const Chat = () => {
     <div className="h-[90%]">
       <div className="p-3 flex items-center">
         <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>AH</AvatarFallback>
         </Avatar>
         <div className="ml-3">{chatLog[logIndex].userText}</div>

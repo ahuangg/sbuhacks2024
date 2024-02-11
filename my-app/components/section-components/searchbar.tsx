@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from "react"
 import {
   chatLogAtom,
+  isLoadingAtom,
   logIndexAtom,
   pageStateAtom,
+  progressAtom,
   searchTextAtom,
 } from "@/atoms/globalAtoms"
 import axios from "axios"
@@ -25,6 +27,8 @@ const SearchBar = () => {
   const [currSearchText, setSearchText] = useAtom(searchTextAtom)
   const [chatLog, setChatLog] = useAtom(chatLogAtom)
   const [logIndex, setLogIndex] = useAtom(logIndexAtom)
+  const [progress, setProgress] = useAtom(progressAtom)
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom)
 
   useEffect(() => {
     let currentPlaceholder = ""
@@ -60,9 +64,19 @@ const SearchBar = () => {
 
     return () => clearInterval(typingEffect)
   }, [])
+
   const handleSearch = async () => {
+    setIsLoading(true)
+
     let gptText = await axios.post("http://localhost:8080/response", {
       data: { text: currSearchText },
+      onDownloadProgress: function (progressEvent: any) {
+        const progress =
+          progressEvent.loaded /
+          progressEvent.event.target.getResponseHeader("x-file-size")
+        const percent = Math.round(progress * 100)
+        console.log(percent)
+      },
     })
 
     setChatLog([
@@ -82,6 +96,7 @@ const SearchBar = () => {
 
     setSearchText("")
     setCurrPageState("chat")
+    setIsLoading(false)
   }
 
   return (

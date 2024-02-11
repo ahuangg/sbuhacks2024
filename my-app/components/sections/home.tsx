@@ -25,6 +25,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+import ProgressBar from "../section-components/progress-bar"
 import SearchBar from "../section-components/searchbar"
 
 let recommendations = [
@@ -129,8 +130,12 @@ const Home = () => {
           </div>
         </div>
       </div>
+
       <div className="flex justify-bottom">
         <SearchBar />
+      </div>
+      <div className="flex items-center justify-center mt-3">
+        <ProgressBar />
       </div>
     </React.Fragment>
   )

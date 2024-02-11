@@ -16,7 +16,11 @@ import { Input } from "@/components/ui/input"
 
 const SearchBar = () => {
   const [placeholder, setPlaceholder] = useState("")
-  const placeholders: string[] = ["Enter a prompt here"]
+  const placeholders: string[] = ["Enter a prompt here", "I need outfit ideas for my high school reunion",
+  "I want a nice suit for my prom", 
+  "Daughters piano recital",
+  "Black t-shirt",
+  "Need suggestions for meeting my girlfriend's parents"];
   const [currPageState, setCurrPageState] = useAtom(pageStateAtom)
   const [currSearchText, setSearchText] = useAtom(searchTextAtom)
   const [chatLog, setChatLog] = useAtom(chatLogAtom)
@@ -36,7 +40,7 @@ const SearchBar = () => {
       if (charIndex === text.length || charIndex === 0) {
         direction *= -1
 
-        if (charIndex === text.length) {
+        if (charIndex === text.length + 1) {
           setTimeout(() => {
             setPlaceholder((prev) => prev.slice(0, -1))
           }, 500)

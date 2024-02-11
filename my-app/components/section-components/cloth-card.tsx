@@ -2,45 +2,14 @@ import React from "react"
 import { BsBoxArrowInUpRight, BsStar } from "react-icons/bs"
 
 import { cn } from "@/lib/utils"
-import { useAtom } from "jotai"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import {chatLogAtom, logIndexAtom } from "@/atoms/globalAtoms"
 
 interface ClothCardProps {
   clothingDetails: any
 }
 
 const ClothCard = (props: ClothCardProps) => {
-  const [chatLog, setChatLog] = useAtom(chatLogAtom)
-  const [logIndex] = useAtom(logIndexAtom)
-  console.log(chatLog[logIndex].favorite)
   const renderCards = () => {
-
-    const handleFav = (cloth: any) => {
-      console.log(cloth)
-      let temp = chatLog[logIndex].favorite
-      //remvoe from favorites
-      if(temp.includes(cloth)){
-        let indexToRemove = temp.indexOf(cloth);
-        if (indexToRemove !== -1) {
-          temp.splice(indexToRemove, 1);
-        }
-
-      } 
-      //add to favorites
-      else{
-
-      temp.push(cloth)
-      }
-    setChatLog([
-      ...chatLog,
-      {
-        favorite: temp,
-      },
-    ])
-    }
-
-
     return props.clothingDetails[0].map((cloth: any) => {
       return (
         <div>
@@ -67,7 +36,6 @@ const ClothCard = (props: ClothCardProps) => {
                     className={cn(
                       "cursor-pointer bg-background text-3xl text-foreground"
                     )}
-                    onClick={() => handleFav(cloth)}
                   />
                 </div>
               </div>

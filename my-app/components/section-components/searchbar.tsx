@@ -70,6 +70,7 @@ const SearchBar = () => {
 
   const handleSearch = async () => {
     setIsLoading(true)
+    setProgress(0)
 
     let gptText = await axios.post("http://localhost:8080/response", {
       data: { text: currSearchText },
@@ -97,7 +98,6 @@ const SearchBar = () => {
 
     setLogIndex(() => chatLog.length)
 
-    setProgress(0)
     setSearchText("")
     setCurrPageState("chat")
     setIsLoading(false)

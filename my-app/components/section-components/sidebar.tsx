@@ -3,7 +3,7 @@
 import React from "react"
 import { chatLogAtom, logIndexAtom, pageStateAtom } from "@/atoms/globalAtoms"
 import { useAtom } from "jotai"
-import { BsArrowLeftShort, BsChat, BsPlusCircle } from "react-icons/bs"
+import { BsArrowLeftShort, BsChat, BsHeart, BsPlusCircle } from "react-icons/bs"
 
 import { cn } from "@/lib/utils"
 import { useSidebar } from "@/hooks/useSidebar"
@@ -37,8 +37,19 @@ const Sidebar = () => {
         )}
         onClick={handleToggle}
       />
-      <div className="space-y-4 py-4">
+      <div className="space-y-4 py-4 ml-3">
         <div className="px-3 py-2">
+          
+        <Label className="flex">
+              <BsHeart
+                className={cn(
+                  "cursor-pointer bg-background text-3xl text-foreground"
+                )}
+              />
+              <div className={cn("flex items-center", !isOpen && "ml-3")}>
+                {!isOpen ? "Favorites" : ""}
+              </div>
+            </Label>
           <div
             className="flex mt-6 space-y-1 ml-3 gap-2"
             onClick={() => {
@@ -48,13 +59,14 @@ const Sidebar = () => {
             <Label className="flex">
               <BsPlusCircle
                 className={cn(
-                  "cursor-pointer rounded-full border bg-background text-3xl text-foreground"
+                  "cursor-pointer rounded-full border text-3xl text-foreground"
                 )}
               />
               <div className={cn("flex items-center", !isOpen && "ml-3")}>
                 {!isOpen ? "New Chat" : ""}
               </div>
             </Label>
+            
           </div>
 
           {isOpen ? (

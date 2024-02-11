@@ -30,6 +30,7 @@ const Sidebar = () => {
         !isOpen ? "w-64" : "w-[78px]"
       )}
     >
+      
       <BsArrowLeftShort
         className={cn(
           "absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",

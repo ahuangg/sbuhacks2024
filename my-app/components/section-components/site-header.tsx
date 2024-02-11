@@ -28,26 +28,94 @@ export function SiteHeader() {
   const [password, setPassword] = React.useState("")
   const [userName, setUserName] = useAtom(userAtom)
   const [currPageState, setPageState] = useAtom(pageStateAtom)
+  const [error, setError] = React.useState("")
+
+  const handleClose = async() => {
+    setName("")
+    setEmail("")
+    setPassword("")
+    setError("")
+  };
 
   const handleLogin = async () => {
-    const res = await axios.post("http://localhost:8080/login", {
-      email,
-      password,
-    })
-    setUserName(res.data.name)
-    setPageState("home")
-  }
+    setError("")
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
+    let res = null; 
+    try {
+      res = await axios.post("http://localhost:8080/login", {
+        email,
+        password,
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          setError("Invalid password.");
+          return
+        } 
+        if (error.response?.status === 402) {
+          setError("No account attached to given email."); 
+          return
+        }
+        else {
+          setError("An error occured during login.")
+        }
+        return; 
+      }
+    }
+    if (res) { 
+      setUserName(res.data.name);
+      setPageState("home");
+    }
+  };
 
   const handleRegister = async () => {
-    await axios.post("http://localhost:8080/register", {
-      name,
-      email,
-      password,
-    })
+    setError("")
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
 
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
+    if (name.length < 5) {
+      setError("Username must be at least 5 characters long.");
+      return;
+    }
+    try {
+      await axios.post("http://localhost:8080/register", {
+        name,
+        email,
+        password,
+      });
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 409) {
+          setError("The username or email supplied is already registered to an account.");
+        } else {
+          setError("An error occurred during registration.");
+        }
+      }
+      return
+    }
     setUserName(name)
     setPageState("home")
-  }
+  };
 
   return (
     <header className="bg-background sticky top-0 z-40 w-full border-b">
@@ -59,11 +127,11 @@ export function SiteHeader() {
             {userName === "Guest" ? (
               <>
                 <Dialog>
-                  <DialogTrigger asChild>
+                  <DialogTrigger asChild onClick={handleClose}>
                     <Button variant="ghost">Login</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
+                    <DialogHeader >
                       <DialogTitle>Login</DialogTitle>
                       <DialogDescription>
                         Enter email and password to login your account.
@@ -87,11 +155,15 @@ export function SiteHeader() {
                         </Label>
                         <Input
                           id="password"
+                          type="password"
                           value={password}
                           className="col-span-3"
                           onChange={(e) => setPassword(e.target.value)}
                         />
                       </div>
+                      {error && (
+                        <p className="text-red-500 text-sm-center">{error}</p>
+                      )}
                     </div>
                     <DialogFooter>
                       <Button
@@ -107,7 +179,7 @@ export function SiteHeader() {
                 </Dialog>
 
                 <Dialog>
-                  <DialogTrigger asChild>
+                  <DialogTrigger asChild onClick={handleClose}>
                     <Button>Register</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
@@ -150,8 +222,15 @@ export function SiteHeader() {
                           className="col-span-3"
                           type="password"
                           onChange={(e) => setPassword(e.target.value)}
+                          required
+                          title="Password must contain at least one number,  
+                          one alphabet, one symbol, and be at  
+                          least 8 characters long"
                         />
                       </div>
+                      {error && (
+                        <p className="text-red-500 text-sm-center">{error}</p>
+                      )}
                     </div>
                     <DialogFooter>
                       <Button

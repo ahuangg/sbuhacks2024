@@ -4,6 +4,7 @@ import {
   logIndexAtom,
   pageStateAtom,
   searchTextAtom,
+  userAtom,
 } from "@/atoms/globalAtoms"
 import {
   babyshower,
@@ -73,6 +74,7 @@ const Home = () => {
   const [logIndex, setLogIndex] = useAtom(logIndexAtom)
   const [chatLog, setChatLog] = useAtom(chatLogAtom)
   const [currSearchText, setSearchText] = useAtom(searchTextAtom)
+  const [userName, setUserName] = useAtom(userAtom)
 
   const handleRecommendations = (occasion: any) => {
     let gptText = occasion_mapping[occasion]
@@ -96,7 +98,7 @@ const Home = () => {
     <React.Fragment>
       <div className="h-[90%]">
         <h1 className="text-5xl font-medium bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 inline-block text-transparent bg-clip-text">
-          Hello, Alan.
+          {`Hello, ${userName}`}
         </h1>
         <h1 className="text-5xl font-medium text-slate-600">
           What occasion are you attending today?

@@ -1,13 +1,13 @@
-import React from "react"
+import React, {useState} from "react"
 import { chatLogAtom, logIndexAtom, pageStateAtom } from "@/atoms/globalAtoms"
 import { useAtom } from "jotai"
-import { BsBoxArrowInUpRight, BsHeart } from "react-icons/bs"
+import { BsBoxArrowInUpRight, BsHeart, BsHeartFill } from "react-icons/bs"
 
 import { cn } from "@/lib/utils"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 interface ClothCardProps {
-  clothingDetails: any
+  clothingDetails: any,
   chatId: number
 }
 
@@ -15,15 +15,16 @@ const ClothCard = (props: ClothCardProps) => {
   const [chatLog, setChatLog] = useAtom(chatLogAtom)
   const [logIndex] = useAtom(logIndexAtom)
   const [currPageState] = useAtom(pageStateAtom)
+  const [inFav, setInFav] = useState(false)
 
   console.log(chatLog[logIndex].favorite)
 
   const handleFav = (cloth: any) => {
     console.log(cloth)
     let temp = []
-    if (currPageState === "chat") {
+    if(currPageState === "chat"){
       temp = chatLog[logIndex].favorite
-    } else if (currPageState === "favorites") {
+    } else if(currPageState === "favorites"){
       temp = chatLog[props.chatId].favorite
     }
     //remvoe from favorites
@@ -32,14 +33,16 @@ const ClothCard = (props: ClothCardProps) => {
       if (indexToRemove !== -1) {
         temp.splice(indexToRemove, 1)
       }
+      setInFav(false)
     }
     //add to favorites
     else {
       temp.push(cloth)
+      setInFav(true)
     }
-    if (currPageState === "chat") {
+    if(currPageState === "chat"){
       chatLog[logIndex].favorite = temp
-    } else if (currPageState === "favorites") {
+    } else if(currPageState === "favorites"){
       chatLog[props.chatId].favorite = temp
     }
     setChatLog([...chatLog])
@@ -68,12 +71,15 @@ const ClothCard = (props: ClothCardProps) => {
                       )}
                     />
                   </a>
+                  
                   <BsHeart
                     className={cn(
                       "cursor-pointer bg-background text-3xl text-foreground"
                     )}
                     onClick={() => handleFav(cloth)}
                   />
+
+
                 </div>
               </div>
             </div>
@@ -82,11 +88,7 @@ const ClothCard = (props: ClothCardProps) => {
       )
     })
   }
-  return props.clothingDetails[0] ? (
-    <div className="flex flex-row  overflow-x-auto">{renderCards()}</div>
-  ) : (
-    ""
-  )
+  return props.clothingDetails ? <div className="flex flex-row  overflow-x-auto">{renderCards()}</div> : ""
 }
 
 export default ClothCard

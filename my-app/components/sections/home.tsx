@@ -84,7 +84,7 @@ const Home = () => {
         gptText: `Here is your response for ${occasion}`,
         maleRes: gptText.male,
         femaleRes: gptText.female,
-        favorite: {},
+        favorite: [],
       },
     ])
 

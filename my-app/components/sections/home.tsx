@@ -15,31 +15,37 @@ const Home = () => {
   let recommendations = [
     {
       occasion: "Wedding Anniversary",
+      emoji: "👰🏻‍♀️",
       description:
         "Celebrates the years since a couple's wedding with romantic dinners, gifts, or parties.",
     },
     {
       occasion: "Graduation Ceremony",
+      emoji: "🎓",
       description:
         "Marks the completion of academic achievements with formal ceremonies and celebrations.",
     },
     {
       occasion: "Birthday Party",
+      emoji: "🎂",
       description:
         "An annual celebration with cake, gifts, and gatherings to honor someone's birth.",
     },
     {
       occasion: "Baby Shower",
+      emoji: "👶🏻",
       description:
         "A party for an expectant mother, offering support and gifts for the new baby.",
     },
     {
       occasion: "Retirement Party",
+      emoji: "👨🏻‍💼",
       description:
         "Celebrates the end of a professional career with colleagues, friends, and family.",
     },
     {
       occasion: "Housewarming Party",
+      emoji: "🏡",
       description:
         "Welcomes guests to a new home, showcasing the space and receiving gifts.",
     },
@@ -61,7 +67,7 @@ const Home = () => {
               return (
                 <Card>
                   <CardHeader>
-                    <CardTitle>{recc.occasion}</CardTitle>
+                    <CardTitle>{recc.occasion} {recc.emoji}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-slate-600">{recc.description}</p>

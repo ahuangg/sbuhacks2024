@@ -47,8 +47,6 @@ const Favorites = () => {
                   <div>
                     
                     {log.favorite?.map((item) => {
-
-
                       return (
                   <div>
                 

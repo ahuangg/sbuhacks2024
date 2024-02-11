@@ -41,11 +41,11 @@ const SearchBar = () => {
   })
 
   const handleSearch = async () => {
-    let gptText = await axios.post("http://localhost:8080/response", {
-      data: { text: currSearchText },
-    })
+    // let gptText = await axios.post("http://localhost:8080/response", {
+    //   data: { text: currSearchText },
+    // })
 
-    console.log(gptText)
+    // console.log(gptText)
 
     setChatLog([
       ...chatLog,
@@ -53,13 +53,15 @@ const SearchBar = () => {
         chatId: chatLog.length,
         userText: currSearchText,
         gptText: "Here is your response for " + currSearchText,
-        maleRes: gptText.data.male,
-        femaleRes: gptText.data.female,
+        maleRes: 'male',
+        femaleRes: 'female',
         recommendations: [],
+        chatTitle: "chat " + chatLog.length
       },
     ])
 
     setLogIndex(() => chatLog.length)
+    
 
     setSearchText("")
     setCurrPageState("chat")

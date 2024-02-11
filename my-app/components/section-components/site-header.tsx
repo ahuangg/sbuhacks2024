@@ -1,4 +1,7 @@
+"use client"
+
 import { siteConfig } from "@/config/site"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { MainNav } from "@/components/section-components/main-nav"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -10,6 +13,9 @@ export function SiteHeader() {
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-1">
             <ThemeToggle />
+            <Avatar>
+              <AvatarFallback>AH</AvatarFallback>
+            </Avatar>
           </nav>
         </div>
       </div>

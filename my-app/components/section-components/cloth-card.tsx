@@ -1,5 +1,5 @@
 import React from "react"
-import { chatLogAtom, logIndexAtom } from "@/atoms/globalAtoms"
+import { chatLogAtom, logIndexAtom, pageStateAtom } from "@/atoms/globalAtoms"
 import { useAtom } from "jotai"
 import { BsBoxArrowInUpRight, BsStar } from "react-icons/bs"
 
@@ -7,17 +7,25 @@ import { cn } from "@/lib/utils"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 interface ClothCardProps {
-  clothingDetails: any
+  clothingDetails: any,
+  chatId: number
 }
 
 const ClothCard = (props: ClothCardProps) => {
   const [chatLog, setChatLog] = useAtom(chatLogAtom)
   const [logIndex] = useAtom(logIndexAtom)
+  const [currPageState] = useAtom(pageStateAtom)
+
   console.log(chatLog[logIndex].favorite)
 
   const handleFav = (cloth: any) => {
     console.log(cloth)
-    let temp = chatLog[logIndex].favorite
+    let temp = []
+    if(currPageState === "chat"){
+      temp = chatLog[logIndex].favorite
+    } else if(currPageState === "favorites"){
+      temp = chatLog[props.chatId].favorite
+    }
     //remvoe from favorites
     if (temp.includes(cloth)) {
       let indexToRemove = temp.indexOf(cloth)
@@ -29,7 +37,11 @@ const ClothCard = (props: ClothCardProps) => {
     else {
       temp.push(cloth)
     }
-    chatLog[logIndex].favorite = temp
+    if(currPageState === "chat"){
+      chatLog[logIndex].favorite = temp
+    } else if(currPageState === "favorites"){
+      chatLog[props.chatId].favorite = temp
+    }
     setChatLog([...chatLog])
   }
 

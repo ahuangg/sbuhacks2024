@@ -3,7 +3,7 @@
 import React from "react"
 import { chatLogAtom, logIndexAtom, pageStateAtom } from "@/atoms/globalAtoms"
 import { useAtom } from "jotai"
-import { BsArrowLeftShort, BsChat, BsPlusCircle, BsHeart } from "react-icons/bs"
+import { BsArrowLeftShort, BsChat, BsHeart, BsPlusCircle } from "react-icons/bs"
 
 import { cn } from "@/lib/utils"
 import { useSidebar } from "@/hooks/useSidebar"
@@ -39,17 +39,15 @@ const Sidebar = () => {
       />
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
-        <div
-            className="flex mt-6 space-y-1  gap-2"
+          <div
+            className="flex mt-6 space-y-1  ml-3 gap-2"
             onClick={() => {
               setPageState("favorites")
             }}
           >
-        <Label className="flex">
+            <Label className="flex">
               <BsHeart
-                className={cn(
-                  "cursor-pointer text-3xl text-foreground"
-                )}
+                className={cn("cursor-pointer text-3xl text-foreground")}
               />
               <div className={cn("flex items-center", !isOpen && "ml-3")}>
                 {!isOpen ? "Favorites" : ""}

@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from openai import OpenAI
 import json  
+import collections
 
 import urllib.request, json
 
@@ -73,14 +74,21 @@ Please replace placeholders with actual recommendations based on the occasion. C
 
     response_json = json.loads(response.choices[0].message.content)
     search_string = ""
-    response_json['male']['details'] = ['NAME', "LINK", "IMG_URL"]
+
     for gender, details in response_json.items():
+        counter = 0
+        response_json[gender]['details'] = collections.defaultdict(list)
+
         for item in details['clothes']:
+            if(counter == 2): break
             search_string = gender + " " + item + " clothes" 
             print(search_string)
             result = shopping_results(search_string)[1:]
-            response_json[gender]['details'] = result
-            break
+            
+            idk = "item" + str(counter)
+            response_json[gender]['details'][idk].append(result)
+            counter += 1
+            
     print(response_json)
     return response_json
 

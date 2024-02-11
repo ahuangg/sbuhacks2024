@@ -44,9 +44,9 @@ CORS(app)
 
 @app.route("/response", methods=['GET','POST'])
 def response():
-    # data = request.get_json()
-    # received_variable = data.get('text')
-    # print(received_variable)
+    data = request.get_json()
+    received_variable = data.get('text')
+
     client = OpenAI()
 
     response = client.chat.completions.create(
@@ -69,7 +69,7 @@ def response():
 
 Please replace placeholders with actual recommendations based on the occasion. Come up with multiple suggestions for each gender for the occasion given.
 """},
-    {"role": "user", "content": "give me a wedding outfit"}
+    {"role": "user", "content": received_variable}
     ])
 
     response_json = json.loads(response.choices[0].message.content)
@@ -80,7 +80,6 @@ Please replace placeholders with actual recommendations based on the occasion. C
         response_json[gender]['details'] = collections.defaultdict(list)
 
         for item in details['clothes']:
-            if(counter == 2): break
             search_string = gender + " " + item + " clothes" 
             print(search_string)
             result = shopping_results(search_string)[1:]

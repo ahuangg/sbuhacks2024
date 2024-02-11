@@ -30,13 +30,16 @@ const Favorites = () => {
               >
                 <Label className="flex">
                   <div style={{ fontSize: "26pt", width: "100%" }}>
-                    {log.userText}
+                    {log.favorite.length > 0 ? log.userText : ""}
                   </div>
                 </Label>
                 <div>
                   <p className="text-sm font-medium text-slate-600"></p>
                   <div className="my-2">
-                    <ClothCard clothingDetails={[log.favorite]} />
+                    <ClothCard 
+                    clothingDetails={[log.favorite]}
+                    chatId={log.chatId}
+                    />
                   </div>
                 </div>
               </div>

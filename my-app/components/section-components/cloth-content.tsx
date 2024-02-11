@@ -19,6 +19,7 @@ const ClothContent = (props: ClothContentProps) => {
             <div className="my-2">
               <ClothCard
                 clothingDetails={props.contentData.details[`item${index}`]}
+                chatId={0}
               />
             </div>
           </div>

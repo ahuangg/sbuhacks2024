@@ -1,4 +1,19 @@
 import React from "react"
+import {
+  chatLogAtom,
+  logIndexAtom,
+  pageStateAtom,
+  searchTextAtom,
+} from "@/atoms/globalAtoms"
+import {
+  babyshower,
+  birthday,
+  graduation,
+  housewarming,
+  retirement,
+  wedding,
+} from "@/data/data"
+import { useAtom } from "jotai"
 import { BsSearch } from "react-icons/bs"
 
 import {
@@ -51,6 +66,39 @@ const Home = () => {
     },
   ]
 
+let occasion_mapping: any = {
+  "Wedding Anniversary": wedding,
+  "Graduation Ceremony": graduation,
+  "Birthday Party": birthday,
+  "Baby Shower": babyshower,
+  "Retirement Party": retirement,
+  "Housewarming Party": housewarming,
+}
+
+const Home = () => {
+  const [currPageState, setCurrPageState] = useAtom(pageStateAtom)
+  const [logIndex, setLogIndex] = useAtom(logIndexAtom)
+  const [chatLog, setChatLog] = useAtom(chatLogAtom)
+  const [currSearchText, setSearchText] = useAtom(searchTextAtom)
+
+  const handleRecommendations = (occasion: any) => {
+    let gptText = occasion_mapping[occasion]
+    setChatLog([
+      ...chatLog,
+      {
+        chatId: chatLog.length,
+        userText: occasion,
+        gptText: `Here is your response for ${occasion}`,
+        maleRes: gptText.male,
+        femaleRes: gptText.female,
+        favorite: {},
+      },
+    ])
+
+    setLogIndex(() => chatLog.length)
+    setSearchText("")
+    setCurrPageState("chat")
+  }
   return (
     <React.Fragment>
       <div className="h-[90%]">
@@ -65,7 +113,12 @@ const Home = () => {
           <div className="grid grid-cols-3 gap-4">
             {recommendations.map((recc) => {
               return (
-                <Card>
+                <Card
+                  onClick={() => {
+                    handleRecommendations(recc.occasion)
+                    setCurrPageState("chat")
+                  }}
+                >
                   <CardHeader>
                     <CardTitle>{recc.occasion} {recc.emoji}</CardTitle>
                   </CardHeader>
@@ -86,6 +139,7 @@ const Home = () => {
       </div>
     </React.Fragment>
   )
+}
 }
 
 export default Home

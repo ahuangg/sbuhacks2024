@@ -2,28 +2,41 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from openai import OpenAI
 import json  
+import collections
 
 import urllib.request, json
 
 def shopping_results(keyword):
     keyword = keyword.replace(" ", "%20")
     try:
-        url = "https://api.axesso.de/amz/amazon-search-by-keyword-asin?domainCode=com&keyword={keyword}&page=1&sortBy=relevanceblender"
+        url = f"https://api.axesso.de/amz/amazon-search-by-keyword-asin?domainCode=com&keyword={keyword}&page=1&sortBy=relevanceblender"
 
         hdr ={
         'Cache-Control': 'no-cache',
-        'axesso-api-key': '59345adcf379474cbda51890e7847fe6',
+        'axesso-api-key': 'd39560d471ce401cbbec58fb6ac78cff',
         }
 
         req = urllib.request.Request(url, headers=hdr)
 
         req.get_method = lambda: 'GET'
-        response = urllib.request.urlopen(req)
-        print(response.getcode())
-        print(response.read())
+        result = [[]]
+
+        with urllib.request.urlopen(req) as response:
+            data = json.loads(response.read().decode())
+            if data.get("responseStatus") == "PRODUCT_FOUND_RESPONSE" and data.get("foundProducts"):
+                index = 0
+                for product in data.get("searchProductDetails")[:5]:
+                    name = product.get("productDescription", "No Name")
+                    img_url = product.get("imgUrl", "No Image URL")
+                    dp_url = "https://www.amazon.com" + product.get("dpUrl", "No DP URL")
+                    # print(f"Name: {name}\nImage URL: {img_url}\nDP URL: {dp_url}\n")
+                    result.append([name, img_url, dp_url])
+                    index += 1
+        return result
+
     except Exception as e:
         print(e)
-    return response
+
 
 
 app = Flask(__name__)
@@ -61,10 +74,22 @@ Please replace placeholders with actual recommendations based on the occasion. C
 
     response_json = json.loads(response.choices[0].message.content)
     search_string = ""
+
     for gender, details in response_json.items():
+        counter = 0
+        response_json[gender]['details'] = collections.defaultdict(list)
+
         for item in details['clothes']:
-            search_string = gender + " " + item
-            # shopping_results(search_string)
+            if(counter == 2): break
+            search_string = gender + " " + item + " clothes" 
+            print(search_string)
+            result = shopping_results(search_string)[1:]
+            
+            idk = "item" + str(counter)
+            response_json[gender]['details'][idk].append(result)
+            counter += 1
+            
+    print(response_json)
     return response_json
 
 if __name__ == "__main__":

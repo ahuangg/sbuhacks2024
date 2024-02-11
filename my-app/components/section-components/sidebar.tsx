@@ -99,9 +99,12 @@ const Sidebar = () => {
                         )}
                       />
                       <div
-                        className={cn("flex items-center", !isOpen && "ml-3")}
+                        className={cn(
+                          "flex items-center text-sm",
+                          !isOpen && "ml-3"
+                        )}
                       >
-                        chat {log.chatId + 1}
+                        {log.userText}
                       </div>
                     </Label>
                   </div>

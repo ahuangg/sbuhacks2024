@@ -40,12 +40,15 @@ const Favorites = () => {
                         style={{fontSize: "26pt", width: "100%"}}
                       >
                         {log.userText}
-                        
+
                       </div>
                       
                     </Label>
                   <div>
+                    
                     {log.favorite?.map((item) => {
+
+
                       return (
                   <div>
                 

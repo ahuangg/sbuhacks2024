@@ -2,6 +2,10 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from openai import OpenAI
 import json  
+<<<<<<< Updated upstream
+=======
+from flask_cors import cross_origin
+>>>>>>> Stashed changes
 import collections
 
 import urllib.request, json
@@ -53,17 +57,17 @@ def response():
     model="gpt-3.5-turbo-0125",
     messages=[
     {"role": "system", "content": """You are a virtual fashion consultant. For any given occasion, generate clothing suggestions formatted as a JSON object. The suggestions should cater to both male and female options, detailing 'style', 'accessories', 'fabric', and 'color'. Ensure the recommendations are appropriate for the context of the occasion described.
-
+    Only return 1 piece of clothing for each gender.
     For example, if the occasion is 'daughter's piano recital', think about the formality of the event, the venue, and typical attire suited for such an occasion. The clothes array should inclulde all attire for that suggestion. So shirt, shoes, jacket, etc. Whatever clothes are suggested for that event. While the description array will describe each of the clothes corresponding to the suggested clothes in the previous array. Your response should structured as follows:
 
     {
     "male": {
-        "clothes": ["clothe1", "clothe2", ...]
-        "description": ["desc1 for clothe1", ...]
+        "clothes": ["clothe1"]
+        "description": ["desc1 for clothe1"]
     },
     "female": {
-        "clothes": ["clothe1", "clothe2", ...]
-        "description": ["desc1 for clothe1", ...]
+        "clothes": ["clothe1"]
+        "description": ["desc1 for clothe1"]
     }
     }
 

@@ -56,6 +56,7 @@ const SearchBar = () => {
         maleRes: gptText.data.male,
         femaleRes: gptText.data.female,
         recommendations: [],
+        favorite: [],
       },
     ])
 

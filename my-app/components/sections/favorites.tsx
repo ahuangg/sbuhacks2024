@@ -34,6 +34,7 @@ const Favorites = () => {
                      
                       <div
                         className={cn("flex items-center")}
+                        style={{fontSize: "26pt"}}
                       >
                         {log.chatTitle}
                       </div>

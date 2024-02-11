@@ -33,25 +33,32 @@ const Sidebar = () => {
       <BsArrowLeftShort
         className={cn(
           "absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
-          !isOpen && "rotate-180"
+          isOpen && "rotate-180"
         )}
         onClick={handleToggle}
       />
       <div className="space-y-4 py-4 ml-3">
         <div className="px-3 py-2">
-          
+        <div
+            className="flex mt-6 space-y-1  gap-2"
+            onClick={() => {
+              setPageState("favorites")
+              console.log("favorites page")
+            }}
+          >
         <Label className="flex">
               <BsHeart
                 className={cn(
-                  "cursor-pointer bg-background text-3xl text-foreground"
+                  "cursor-pointer text-3xl text-foreground"
                 )}
               />
               <div className={cn("flex items-center", !isOpen && "ml-3")}>
                 {!isOpen ? "Favorites" : ""}
               </div>
             </Label>
+          </div>
           <div
-            className="flex mt-6 space-y-1 ml-3 gap-2"
+            className="flex mt-6 space-y-1  gap-2"
             onClick={() => {
               setPageState("home")
             }}
@@ -73,7 +80,7 @@ const Sidebar = () => {
             ""
           ) : (
             <>
-              <p className="text-sm font-medium text-slate-500 mt-6 mb-3 ml-3">
+              <p className="text-sm font-medium text-slate-500 mt-6 mb-3">
                 Recents
               </p>
               {chatLog.map((log) => {

@@ -6,6 +6,7 @@ import { useAtom } from "jotai"
 import SearchBar from "@/components/section-components/searchbar"
 import Chat from "@/components/sections/chat"
 import Home from "@/components/sections/home"
+import Favorites from "@/components/sections/favorites"
 
 export default function IndexPage() {
   const [currPageState] = useAtom(pageStateAtom)
@@ -13,7 +14,10 @@ export default function IndexPage() {
   const handlePageState = () => {
     if (currPageState === "chat") {
       return <Chat />
-    } else {
+    } else if(currPageState === "favorites"){
+      return <Favorites/>
+    }
+     else {
       return <Home />
     }
   }

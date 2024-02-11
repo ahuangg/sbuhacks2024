@@ -30,7 +30,6 @@ const Sidebar = () => {
         !isOpen ? "w-64" : "w-[78px]"
       )}
     >
-      
       <BsArrowLeftShort
         className={cn(
           "absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
@@ -81,9 +80,12 @@ const Sidebar = () => {
                         )}
                       />
                       <div
-                        className={cn("flex items-center", !isOpen && "ml-3")}
+                        className={cn(
+                          "flex items-center text-sm",
+                          !isOpen && "ml-3"
+                        )}
                       >
-                        chat {log.chatId + 1}
+                        {log.userText}
                       </div>
                     </Label>
                   </div>

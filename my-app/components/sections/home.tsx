@@ -1,4 +1,19 @@
 import React from "react"
+import {
+  chatLogAtom,
+  logIndexAtom,
+  pageStateAtom,
+  searchTextAtom,
+} from "@/atoms/globalAtoms"
+import {
+  babyshower,
+  birthday,
+  graduation,
+  housewarming,
+  retirement,
+  wedding,
+} from "@/data/data"
+import { useAtom } from "jotai"
 import { BsSearch } from "react-icons/bs"
 
 import {
@@ -11,40 +26,72 @@ import {
 
 import SearchBar from "../section-components/searchbar"
 
-const Home = () => {
-  let recommendations = [
-    {
-      occasion: "Wedding Anniversary",
-      description:
-        "Celebrates the years since a couple's wedding with romantic dinners, gifts, or parties.",
-    },
-    {
-      occasion: "Graduation Ceremony",
-      description:
-        "Marks the completion of academic achievements with formal ceremonies and celebrations.",
-    },
-    {
-      occasion: "Birthday Party",
-      description:
-        "An annual celebration with cake, gifts, and gatherings to honor someone's birth.",
-    },
-    {
-      occasion: "Baby Shower",
-      description:
-        "A party for an expectant mother, offering support and gifts for the new baby.",
-    },
-    {
-      occasion: "Retirement Party",
-      description:
-        "Celebrates the end of a professional career with colleagues, friends, and family.",
-    },
-    {
-      occasion: "Housewarming Party",
-      description:
-        "Welcomes guests to a new home, showcasing the space and receiving gifts.",
-    },
-  ]
+let recommendations = [
+  {
+    occasion: "Wedding Anniversary",
+    description:
+      "Celebrates the years since a couple's wedding with romantic dinners, gifts, or parties.",
+  },
+  {
+    occasion: "Graduation Ceremony",
+    description:
+      "Marks the completion of academic achievements with formal ceremonies and celebrations.",
+  },
+  {
+    occasion: "Birthday Party",
+    description:
+      "An annual celebration with cake, gifts, and gatherings to honor someone's birth.",
+  },
+  {
+    occasion: "Baby Shower",
+    description:
+      "A party for an expectant mother, offering support and gifts for the new baby.",
+  },
+  {
+    occasion: "Retirement Party",
+    description:
+      "Celebrates the end of a professional career with colleagues, friends, and family.",
+  },
+  {
+    occasion: "Housewarming Party",
+    description:
+      "Welcomes guests to a new home, showcasing the space and receiving gifts.",
+  },
+]
 
+let occasion_mapping: any = {
+  "Wedding Anniversary": wedding,
+  "Graduation Ceremony": graduation,
+  "Birthday Party": birthday,
+  "Baby Shower": babyshower,
+  "Retirement Party": retirement,
+  "Housewarming Party": housewarming,
+}
+
+const Home = () => {
+  const [currPageState, setCurrPageState] = useAtom(pageStateAtom)
+  const [logIndex, setLogIndex] = useAtom(logIndexAtom)
+  const [chatLog, setChatLog] = useAtom(chatLogAtom)
+  const [currSearchText, setSearchText] = useAtom(searchTextAtom)
+
+  const handleRecommendations = (occasion: any) => {
+    let gptText = occasion_mapping[occasion]
+    setChatLog([
+      ...chatLog,
+      {
+        chatId: chatLog.length,
+        userText: occasion,
+        gptText: `Here is your response for ${occasion}`,
+        maleRes: gptText.male,
+        femaleRes: gptText.female,
+        favorite: {},
+      },
+    ])
+
+    setLogIndex(() => chatLog.length)
+    setSearchText("")
+    setCurrPageState("chat")
+  }
   return (
     <React.Fragment>
       <div className="h-[90%]">
@@ -59,7 +106,12 @@ const Home = () => {
           <div className="grid grid-cols-3 gap-4">
             {recommendations.map((recc) => {
               return (
-                <Card>
+                <Card
+                  onClick={() => {
+                    handleRecommendations(recc.occasion)
+                    setCurrPageState("chat")
+                  }}
+                >
                   <CardHeader>
                     <CardTitle>{recc.occasion}</CardTitle>
                   </CardHeader>

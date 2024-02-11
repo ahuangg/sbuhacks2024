@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 
 const SearchBar = () => {
-  const [placeholder, setPlaceHolder] = useState<string>("")
+  const [placeholder, setPlaceholder] = useState("")
   const placeholders: string[] = ["Enter a prompt here"]
   const [currPageState, setCurrPageState] = useAtom(pageStateAtom)
   const [currSearchText, setSearchText] = useAtom(searchTextAtom)
@@ -23,29 +23,43 @@ const SearchBar = () => {
   const [logIndex, setLogIndex] = useAtom(logIndexAtom)
 
   useEffect(() => {
-    let currentPlaceholder: string = ""
-    let currentIndex: number = 0
-    let typingEffect: NodeJS.Timeout = setInterval(() => {
-      if (currentPlaceholder.length === placeholders[currentIndex].length) {
-        currentIndex = (currentIndex + 1) % placeholders.length
-        currentPlaceholder = ""
+    let currentPlaceholder = ""
+    let currentIndex = 0
+    let charIndex = 0
+    let direction = 1
+
+    const updatePlaceholder = () => {
+      const text = placeholders[currentIndex]
+
+      charIndex += direction
+
+      if (charIndex === text.length || charIndex === 0) {
+        direction *= -1
+
+        if (charIndex === text.length) {
+          setTimeout(() => {
+            setPlaceholder((prev) => prev.slice(0, -1))
+          }, 500)
+          return
+        }
+
+        if (charIndex === 0 && direction === 1) {
+          currentIndex = (currentIndex + 1) % placeholders.length
+        }
       }
-      currentPlaceholder = placeholders[currentIndex].slice(
-        0,
-        currentPlaceholder.length + 1
-      )
-      setPlaceHolder(currentPlaceholder)
-    }, 75)
+
+      currentPlaceholder = text.slice(0, charIndex)
+      setPlaceholder(currentPlaceholder)
+    }
+
+    const typingEffect = setInterval(updatePlaceholder, 150)
 
     return () => clearInterval(typingEffect)
-  })
-
+  }, [])
   const handleSearch = async () => {
     let gptText = await axios.post("http://localhost:8080/response", {
       data: { text: currSearchText },
     })
-
-    console.log(gptText)
 
     setChatLog([
       ...chatLog,

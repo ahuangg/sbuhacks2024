@@ -13,10 +13,16 @@ const ClothCard = (props: ClothCardProps) => {
     return props.clothingDetails[0].map((cloth: any) => {
       return (
         <div>
-          <Card className="p-3 m-0 w-[400px] mr-6">
-            <div className="flex">
-              <img className="h-[200px] w-[200px]" src={cloth[1]}></img>
-              <div className="ml-3 flex flex-col justify-between">
+          <Card className="p-4 m-0 w-[400px] mr-6">
+            <div className="grid grid-cols-2">
+              <div className="flex flex-wrap">
+                <img
+                  className="h-[150px] w-[150px] object-cover"
+                  src={cloth[1]}
+                ></img>
+              </div>
+
+              <div className=" flex flex-col justify-between">
                 <div className="text-sm font-medium ">{cloth[0]}</div>
                 <div className="flex justify-between">
                   <a href={cloth[2]} target="_blank">
@@ -38,13 +44,6 @@ const ClothCard = (props: ClothCardProps) => {
         </div>
       )
     })
-    // let content: any = []
-
-    // for (const key in props.clothingDetails) {
-    //   content.push()
-    // }
-
-    // return content
   }
   return <div className="flex flex-row  overflow-x-auto">{renderCards()}</div>
 }

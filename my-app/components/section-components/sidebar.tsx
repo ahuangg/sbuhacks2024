@@ -55,7 +55,7 @@ const Sidebar = () => {
             </Label>
           </div>
           <div
-            className="flex mt-6 space-y-1 ml-3 gap-2"
+            className="flex mt-3 space-y-1 ml-3 gap-2"
             onClick={() => {
               setPageState("home")
             }}
@@ -82,7 +82,7 @@ const Sidebar = () => {
               {chatLog.map((log) => {
                 return (
                   <div
-                    className="flex space-y-1 gap-2  ml-3"
+                    className="flex space-y-1 gap-2  ml-3 mt-3"
                     onClick={() => {
                       setLogIndex(log.chatId)
                       setPageState("chat")
@@ -100,7 +100,9 @@ const Sidebar = () => {
                           !isOpen && "ml-3"
                         )}
                       >
-                        {log.userText}
+                        {log.userText.length > 18
+                          ? `${log.userText.substring(0, 15)} ...`
+                          : log.userText}
                       </div>
                     </Label>
                   </div>

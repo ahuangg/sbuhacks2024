@@ -8,22 +8,34 @@ import urllib.request, json
 def shopping_results(keyword):
     keyword = keyword.replace(" ", "%20")
     try:
-        url = "https://api.axesso.de/amz/amazon-search-by-keyword-asin?domainCode=com&keyword={keyword}&page=1&sortBy=relevanceblender"
+        url = f"https://api.axesso.de/amz/amazon-search-by-keyword-asin?domainCode=com&keyword={keyword}&page=1&sortBy=relevanceblender"
 
         hdr ={
         'Cache-Control': 'no-cache',
-        'axesso-api-key': '59345adcf379474cbda51890e7847fe6',
+        'axesso-api-key': 'd39560d471ce401cbbec58fb6ac78cff',
         }
 
         req = urllib.request.Request(url, headers=hdr)
 
         req.get_method = lambda: 'GET'
-        response = urllib.request.urlopen(req)
-        print(response.getcode())
-        print(response.read())
+        result = [[]]
+
+        with urllib.request.urlopen(req) as response:
+            data = json.loads(response.read().decode())
+            if data.get("responseStatus") == "PRODUCT_FOUND_RESPONSE" and data.get("foundProducts"):
+                index = 0
+                for product in data.get("searchProductDetails")[:5]:
+                    name = product.get("productDescription", "No Name")
+                    img_url = product.get("imgUrl", "No Image URL")
+                    dp_url = "https://www.amazon.com" + product.get("dpUrl", "No DP URL")
+                    # print(f"Name: {name}\nImage URL: {img_url}\nDP URL: {dp_url}\n")
+                    result.append([name, img_url, dp_url])
+                    index += 1
+        return result
+
     except Exception as e:
         print(e)
-    return response
+
 
 
 app = Flask(__name__)
@@ -31,9 +43,9 @@ CORS(app)
 
 @app.route("/response", methods=['GET','POST'])
 def response():
-    data = request.get_json()
-    received_variable = data.get('text')
-    print(received_variable)
+    # data = request.get_json()
+    # received_variable = data.get('text')
+    # print(received_variable)
     client = OpenAI()
 
     response = client.chat.completions.create(
@@ -61,10 +73,15 @@ Please replace placeholders with actual recommendations based on the occasion. C
 
     response_json = json.loads(response.choices[0].message.content)
     search_string = ""
+    response_json['male']['details'] = ['NAME', "LINK", "IMG_URL"]
     for gender, details in response_json.items():
         for item in details['clothes']:
-            search_string = gender + " " + item
-            # shopping_results(search_string)
+            search_string = gender + " " + item + " clothes" 
+            print(search_string)
+            result = shopping_results(search_string)[1:]
+            response_json[gender]['details'] = result
+            break
+    print(response_json)
     return response_json
 
 if __name__ == "__main__":

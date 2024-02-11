@@ -1,10 +1,18 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from openai import OpenAI
+from flask_pymongo import PyMongo
+import bcrypt
 import json  
-import collections
+from flask_cors import cross_origin
 
 import urllib.request, json
+
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+app.config["MONGO_URI"] = "mongodb+srv://admin:Kvc4riIe7kySHblx@cluster0.z8wpbmf.mongodb.net/WearMe"
+mongo = PyMongo(app)
 
 def shopping_results(keyword):
     keyword = keyword.replace(" ", "%20")
@@ -92,6 +100,44 @@ Please replace placeholders with actual recommendations based on the occasion. C
             
     print(response_json)
     return response_json
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.json
+    name = data.get('name')
+    email = data.get('email')
+    password = data.get('password').encode('utf-8')  # Ensure password is in bytes
+    salt = bcrypt.gensalt()
+    
+    if mongo.db.users.find_one({"email": email}):
+        return jsonify({"error": "User already exists"}), 409
+
+    hashed_password = bcrypt.hashpw(password, salt)
+    mongo.db.users.insert_one({
+        "name": name,
+        "email": email,
+        "password": hashed_password
+    })
+
+    return jsonify({"message": "User registered successfully"}), 201
+
+@app.route('/login', methods=['POST'])
+@cross_origin()
+def login():
+    data = request.json
+    email = data.get('email')
+    password = data.get('password').encode('utf-8')  # Convert password to bytes
+
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
+
+    user = mongo.db.users.find_one({"email": email})
+
+    if user and bcrypt.checkpw(password, user["password"]):
+        return jsonify({"name": user["name"]}), 200
+    else:
+        return jsonify({'message': 'Invalid email or password'}), 401
 
 if __name__ == "__main__":
     app.run(debug="True", port=8080)

@@ -7,7 +7,9 @@ interface ClothContentProps {
 }
 
 const ClothContent = (props: ClothContentProps) => {
+  console.log(props.contentData)
   return (
+
     <div>
       {props.contentData.clothes.map((cloth: string, index: number) => {
         return (

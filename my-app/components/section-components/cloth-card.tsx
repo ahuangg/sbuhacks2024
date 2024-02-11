@@ -82,7 +82,7 @@ const ClothCard = (props: ClothCardProps) => {
       )
     })
   }
-  return <div className="flex flex-row  overflow-x-auto">{renderCards()}</div>
+  return props.clothingDetails ? <div className="flex flex-row  overflow-x-auto">{renderCards()}</div> : ""
 }
 
 export default ClothCard

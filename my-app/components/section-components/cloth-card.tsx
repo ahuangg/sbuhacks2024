@@ -15,7 +15,6 @@ const ClothCard = (props: ClothCardProps) => {
   const [chatLog, setChatLog] = useAtom(chatLogAtom)
   const [logIndex] = useAtom(logIndexAtom)
   const [currPageState] = useAtom(pageStateAtom)
-  const [inFav, setInFav] = useState(false)
 
   console.log(chatLog[logIndex].favorite)
 
@@ -33,12 +32,10 @@ const ClothCard = (props: ClothCardProps) => {
       if (indexToRemove !== -1) {
         temp.splice(indexToRemove, 1)
       }
-      setInFav(false)
     }
     //add to favorites
     else {
       temp.push(cloth)
-      setInFav(true)
     }
     if(currPageState === "chat"){
       chatLog[logIndex].favorite = temp
@@ -50,6 +47,12 @@ const ClothCard = (props: ClothCardProps) => {
 
   const renderCards = () => {
     return props.clothingDetails[0].map((cloth: any) => {
+      let inFav = false;
+      if(currPageState === "chat"){
+        inFav = (chatLog[logIndex].favorite.includes(cloth))
+      } else if(currPageState === "favorites"){
+        inFav = (chatLog[props.chatId].favorite.includes(cloth))
+      }
       return (
         <div>
           <Card className="p-4 m-0 w-[400px] mr-6">
@@ -71,15 +74,18 @@ const ClothCard = (props: ClothCardProps) => {
                       )}
                     />
                   </a>
-                  
-                  <BsHeart
+                  {!inFav ? <BsHeart
                     className={cn(
                       "cursor-pointer bg-background text-3xl text-foreground"
                     )}
                     onClick={() => handleFav(cloth)}
-                  />
-
-
+                  /> : <BsHeartFill
+                  className={cn(
+                    "cursor-pointer bg-background text-3xl text-foreground"
+                  )}
+                  onClick={() => handleFav(cloth)}
+                />}
+                  
                 </div>
               </div>
             </div>

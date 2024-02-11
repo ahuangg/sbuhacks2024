@@ -18,11 +18,14 @@ import { Input } from "@/components/ui/input"
 
 const SearchBar = () => {
   const [placeholder, setPlaceholder] = useState("")
-  const placeholders: string[] = ["Enter a prompt here", "I need outfit ideas for my high school reunion",
-  "I want a nice suit for my prom", 
-  "Daughters piano recital",
-  "Black t-shirt",
-  "Need suggestions for meeting my girlfriend's parents"];
+  const placeholders: string[] = [
+    "Enter a prompt here",
+    "I need outfit ideas for my high school reunion",
+    "I want a nice suit for my prom",
+    "Daughters piano recital",
+    "Black t-shirt",
+    "Need suggestions for meeting my girlfriend's parents",
+  ]
   const [currPageState, setCurrPageState] = useAtom(pageStateAtom)
   const [currSearchText, setSearchText] = useAtom(searchTextAtom)
   const [chatLog, setChatLog] = useAtom(chatLogAtom)
@@ -94,6 +97,7 @@ const SearchBar = () => {
 
     setLogIndex(() => chatLog.length)
 
+    setProgress(0)
     setSearchText("")
     setCurrPageState("chat")
     setIsLoading(false)

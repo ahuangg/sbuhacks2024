@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, { useState } from "react"
 import { chatLogAtom, logIndexAtom, pageStateAtom } from "@/atoms/globalAtoms"
 import { useAtom } from "jotai"
 import { BsBoxArrowInUpRight, BsHeart, BsHeartFill } from "react-icons/bs"
@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
 interface ClothCardProps {
-  clothingDetails: any,
+  clothingDetails: any
   chatId: number
 }
 
@@ -21,9 +21,9 @@ const ClothCard = (props: ClothCardProps) => {
   const handleFav = (cloth: any) => {
     console.log(cloth)
     let temp = []
-    if(currPageState === "chat"){
+    if (currPageState === "chat") {
       temp = chatLog[logIndex].favorite
-    } else if(currPageState === "favorites"){
+    } else if (currPageState === "favorites") {
       temp = chatLog[props.chatId].favorite
     }
     //remvoe from favorites
@@ -37,9 +37,9 @@ const ClothCard = (props: ClothCardProps) => {
     else {
       temp.push(cloth)
     }
-    if(currPageState === "chat"){
+    if (currPageState === "chat") {
       chatLog[logIndex].favorite = temp
-    } else if(currPageState === "favorites"){
+    } else if (currPageState === "favorites") {
       chatLog[props.chatId].favorite = temp
     }
     setChatLog([...chatLog])
@@ -47,11 +47,11 @@ const ClothCard = (props: ClothCardProps) => {
 
   const renderCards = () => {
     return props.clothingDetails[0].map((cloth: any) => {
-      let inFav = false;
-      if(currPageState === "chat"){
-        inFav = (chatLog[logIndex].favorite.includes(cloth))
-      } else if(currPageState === "favorites"){
-        inFav = (chatLog[props.chatId].favorite.includes(cloth))
+      let inFav = false
+      if (currPageState === "chat") {
+        inFav = chatLog[logIndex].favorite.includes(cloth)
+      } else if (currPageState === "favorites") {
+        inFav = chatLog[props.chatId].favorite.includes(cloth)
       }
       return (
         <div>
@@ -70,22 +70,25 @@ const ClothCard = (props: ClothCardProps) => {
                   <a href={cloth[2]} target="_blank">
                     <BsBoxArrowInUpRight
                       className={cn(
-                        "cursor-pointer bg-background text-3xl text-foreground"
+                        "cursor-pointer bg-background text-3xl text-foreground hover:opacity-80"
                       )}
                     />
                   </a>
-                  {!inFav ? <BsHeart
-                    className={cn(
-                      "cursor-pointer bg-background text-3xl text-foreground"
-                    )}
-                    onClick={() => handleFav(cloth)}
-                  /> : <BsHeartFill
-                  className={cn(
-                    "cursor-pointer bg-background text-3xl text-foreground"
+                  {!inFav ? (
+                    <BsHeart
+                      className={cn(
+                        "cursor-pointer bg-background text-3xl text-foreground hover:opacity-80"
+                      )}
+                      onClick={() => handleFav(cloth)}
+                    />
+                  ) : (
+                    <BsHeartFill
+                      className={cn(
+                        "cursor-pointer bg-background text-3xl text-foreground hover:opacity-80"
+                      )}
+                      onClick={() => handleFav(cloth)}
+                    />
                   )}
-                  onClick={() => handleFav(cloth)}
-                />}
-                  
                 </div>
               </div>
             </div>
@@ -94,7 +97,11 @@ const ClothCard = (props: ClothCardProps) => {
       )
     })
   }
-  return props.clothingDetails ? <div className="flex flex-row  overflow-x-auto">{renderCards()}</div> : ""
+  return props.clothingDetails ? (
+    <div className="flex flex-row  overflow-x-auto">{renderCards()}</div>
+  ) : (
+    ""
+  )
 }
 
 export default ClothCard

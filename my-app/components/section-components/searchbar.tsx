@@ -113,7 +113,7 @@ const SearchBar = () => {
       ></Input>
       <BsArrowUpCircle
         className={cn(
-          "cursor-pointer rounded-full border bg-background text-3xl text-foreground"
+          "cursor-pointer rounded-full border bg-background text-3xl text-foreground hover:opacity-80"
         )}
         onClick={() => {
           handleSearch()

@@ -32,7 +32,7 @@ const Sidebar = () => {
     >
       <BsArrowLeftShort
         className={cn(
-          "absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
+          "absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground hover:opacity-80",
           isOpen && "rotate-180"
         )}
         onClick={handleToggle}
@@ -40,7 +40,7 @@ const Sidebar = () => {
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div
-            className="flex mt-6 space-y-1  ml-3 gap-2"
+            className="flex mt-6 space-y-1  ml-3 gap-2 hover:opacity-80"
             onClick={() => {
               setPageState("favorites")
             }}
@@ -55,7 +55,7 @@ const Sidebar = () => {
             </Label>
           </div>
           <div
-            className="flex mt-3 space-y-1 ml-3 gap-2"
+            className="flex mt-3 space-y-1 ml-3 gap-2 hover:opacity-80"
             onClick={() => {
               setPageState("home")
             }}
@@ -63,7 +63,7 @@ const Sidebar = () => {
             <Label className="flex">
               <BsPlusCircle
                 className={cn(
-                  "cursor-pointer rounded-full border bg-background text-3xl text-foreground"
+                  "cursor-pointer rounded-full border bg-background text-3xl text-foreground "
                 )}
               />
               <div className={cn("flex items-center", !isOpen && "ml-3")}>
@@ -82,7 +82,7 @@ const Sidebar = () => {
               {chatLog.map((log) => {
                 return (
                   <div
-                    className="flex space-y-1 gap-2  ml-3 mt-3"
+                    className="flex space-y-1 gap-2  ml-3 mt-3 hover:opacity-80"
                     onClick={() => {
                       setLogIndex(log.chatId)
                       setPageState("chat")

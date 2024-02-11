@@ -122,7 +122,7 @@ const Home = () => {
                     <p className="text-slate-600">{recc.description}</p>
                   </CardContent>
                   <CardFooter className="flex justify-end">
-                    <BsSearch />
+                    <BsSearch className="hover:opacity-80" />
                   </CardFooter>
                 </Card>
               )
